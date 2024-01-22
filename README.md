@@ -37,8 +37,8 @@ This will copy all the Assets, and dump the needed DLLs in your current director
 ./LinuxCreatorCompanion
 ```
 
-The LinuxCreatorCompanion has *only* been tested on Arch Linux, and as such, might not be able to find<br>
-the paths for Unity/UnityHub. Currently the manual specifying of paths has not been properly implemented, so I would<br>
+The LinuxCreatorCompanion has *only* been tested on Arch Linux, and as such, might not be able to find
+the paths for Unity/UnityHub. Currently the manual specifying of paths has not been properly implemented, so I would
 appreciate if you opened an Issue.
 
 If you find your windows flickering while resizing, This seems to be a WebKit issue. `WEBKIT_DISABLE_COMPOSITING_MODE=1` may fix this.
