@@ -24,7 +24,7 @@ In the future I will clean things up, make the install process more automated, e
 ## Setup
 You must install the [VRChat Creator Companion](https://vcc.docs.vrchat.com/) via wine first.
 
-As it would be rather dubious to distribute anything from the Creator Companion, you'll need to run a setup.<br>
+As it would be rather legally dubious to distribute anything from the Creator Companion, you'll need to run a setup.<br>
 If you installed the Creator Companion by just running `wine VRChat_CreatorCompanion_Setup_x.x.x.exe`<br>
 
 You can run the following command to get the files you need:
