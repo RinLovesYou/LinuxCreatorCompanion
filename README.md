@@ -17,6 +17,8 @@ In the future I will clean things up, make the install process more automated, e
 
 ---
 
+![img.png](Readme/img.png)
+
 ## Setup
 You must install the [VRChat Creator Companion](https://vcc.docs.vrchat.com/) via wine first.
 
