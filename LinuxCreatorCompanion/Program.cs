@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using LinuxCreatorCompanion.Setup;
 
 namespace LinuxCreatorCompanion;
 
@@ -13,17 +14,19 @@ public class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
-        {
-            var exception = (Exception) eventArgs.ExceptionObject;
-            Console.WriteLine(exception);
-            Console.WriteLine(exception.StackTrace);
-        };
-        Parser.Default.ParseArguments<Options>(args).WithParsed(o =>
-        {
-            if (o.SetupPath != null)
-                CreatorCompanionExtractor.Extract(o.SetupPath!);
-        });
+        // AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
+        // {
+        //     var exception = (Exception) eventArgs.ExceptionObject;
+        //     Console.WriteLine(exception);
+        //     Console.WriteLine(exception.StackTrace);
+        // };
+        // Parser.Default.ParseArguments<Options>(args).WithParsed(o =>
+        // {
+        //     if (o.SetupPath != null)
+        //         CreatorCompanionExtractor.Extract(o.SetupPath!);
+        // });
+        
+        FileChecks.VCCFileChecks();
 
         Entrypoint.Run(args);
     }

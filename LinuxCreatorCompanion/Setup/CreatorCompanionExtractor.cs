@@ -2,23 +2,17 @@ using System.IO.Compression;
 using System.IO.MemoryMappedFiles;
 using ICSharpCode.Decompiler;
 
-namespace LinuxCreatorCompanion;
+namespace LinuxCreatorCompanion.Setup;
 public static class CreatorCompanionExtractor
 {
     public static void Extract(string path)
     {
         if (!Directory.Exists(path))
-        {
-            Console.WriteLine($"{path} does not exist!");
-            Environment.Exit(1);
-        }
+            throw new DirectoryNotFoundException($"{path} does not exist!");
 
         var packageFileName = Path.Combine(path, "CreatorCompanion.exe");
         if (!File.Exists(packageFileName))
-        {
-            Console.WriteLine($"{packageFileName} does not exist!");
-            Environment.Exit(1);
-        }
+            throw new FileNotFoundException($"{packageFileName} does not exist!");
 
         // https://github.com/icsharpcode/ILSpy/blob/master/ICSharpCode.ILSpyCmd/IlspyCmdProgram.cs#L360C14-L360C15
         using (var memoryMappedPackage =
@@ -28,9 +22,8 @@ public static class CreatorCompanionExtractor
             {
                 if (!SingleFileBundle.IsBundle(packageView, out long bundleHeaderOffset))
                 {
-                    Console.WriteLine(
+                    throw new Exception(
                         $"Cannot dump assemblies for {packageFileName}, because it is not a single file bundle.");
-                    Environment.Exit(-1);
                 }
 
                 var manifest = SingleFileBundle.ReadManifest(packageView, bundleHeaderOffset);
@@ -71,9 +64,8 @@ public static class CreatorCompanionExtractor
 
                         if (decompressedStream.Length != entry.Size)
                         {
-                            Console.WriteLine(
+                            throw new Exception(
                                 $"Corrupted single-file entry '{entry.RelativePath}'. Declared decompressed size '{entry.Size}' is not the same as actual decompressed size '{decompressedStream.Length}'.");
-                            Environment.Exit(-1);
                         }
 
                         decompressedStream.Seek(0, SeekOrigin.Begin);
@@ -93,16 +85,13 @@ public static class CreatorCompanionExtractor
 
         if (!Directory.Exists(templates) || !Directory.Exists(tools) || !Directory.Exists(webapp))
         {
-            Console.WriteLine("Templates, Tools, or WebApp does not exist!");
-            Environment.Exit(1);
+            throw new DirectoryNotFoundException("Templates, Tools, or WebApp does not exist!");
         }
 
         //copy those folders recursively
         CopyFolder(templates, Path.Combine(Directory.GetCurrentDirectory(), "Templates"));
         CopyFolder(tools, Path.Combine(Directory.GetCurrentDirectory(), "Tools"));
         CopyFolder(webapp, Path.Combine(Directory.GetCurrentDirectory(), "WebApp"));
-
-        Environment.Exit(0);
     }
     
     private static void CopyFolder(string input, string output)
@@ -111,7 +100,7 @@ public static class CreatorCompanionExtractor
             Directory.CreateDirectory(output);
 
         foreach (var file in Directory.GetFiles(input))
-            File.Copy(file, Path.Combine(output, Path.GetFileName(file)));
+            File.Copy(file, Path.Combine(output, Path.GetFileName(file)), true);
 
         foreach (var folder in Directory.GetDirectories(input))
             CopyFolder(folder, Path.Combine(output, Path.GetFileName(folder)));

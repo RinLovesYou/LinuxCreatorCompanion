@@ -22,20 +22,12 @@ In the future I will clean things up, make the install process more automated, e
 ![img.png](Readme/img.png)
 
 ## Setup
-You must install the [VRChat Creator Companion](https://vcc.docs.vrchat.com/) via wine first.
+You must install WINE. It is used for extracting VCC files from the installer.
 
-As it would be rather legally dubious to distribute anything from the Creator Companion, you'll need to run a setup.<br>
-If you installed the Creator Companion by just running `wine VRChat_CreatorCompanion_Setup_x.x.x.exe`<br>
+You can simply run `./LinuxCreatorCompanion`. 
 
-You can run the following command to get the files you need:
-```
-./LinuxCreatorCompanion --setup "/home/$(whoami)/.wine/drive_c/users/$(whoami)/AppData/Local/Programs/VRChat Creator Companion/"
-```
-
-This will copy all the Assets, and dump the needed DLLs in your current directory. Now you can run
-```
-./LinuxCreatorCompanion
-```
+If any of the VCC files are missing,
+it will automatically download the VCC version compatible with LCC, extract all needed files, and start itself.
 
 The LinuxCreatorCompanion has *only* been tested on Arch Linux, and as such, might not be able to find
 the paths for Unity/UnityHub. Currently the manual specifying of paths has not been properly implemented, so I would
@@ -63,6 +55,9 @@ You will need to grab the following files from your LinuxCreatorCompanion direct
 * vpm-core-lib.dll
 
 And place them in a `Libs` folder in the Solution Directory.
+
+## Credits
+Innounp - https://innounp.sourceforge.net/
 
 ---
 
