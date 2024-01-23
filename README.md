@@ -22,7 +22,10 @@ In the future I will clean things up, make the install process more automated, e
 ![img.png](Readme/img.png)
 
 ## Setup
-You must install WINE. It is used for extracting VCC files from the installer.
+
+**Requirements**
+* wine (used for unpacking the VCC installer)
+* webkit-gtk-2.42.3 required for the UI
 
 You can simply run `./LinuxCreatorCompanion`. 
 
