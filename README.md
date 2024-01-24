@@ -8,6 +8,8 @@
     <a href="https://github.com/RinLovesYou/LinuxCreatorCompanion/issues">Report Bug</a>
     ·
     <a href="https://github.com/RinLovesYou/LinuxCreatorCompanion/issues">Request Feature</a>
+    .
+    <a href="https://discord.gg/2AxKjCy4xk">Linux VR Adventures discord</a>
   </p>
 </div>
 
@@ -37,6 +39,8 @@ the paths for Unity/UnityHub. Currently the manual specifying of paths has not b
 appreciate if you opened an Issue.
 
 If you find your windows flickering while resizing, This seems to be a WebKit issue. `WEBKIT_DISABLE_COMPOSITING_MODE=1` may fix this.
+
+If you want some more immediate user support (issues can be pretty annoying for it), join the LVRA discord linked in the header.
 
 ---
 
