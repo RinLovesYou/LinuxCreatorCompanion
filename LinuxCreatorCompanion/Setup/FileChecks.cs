@@ -27,6 +27,6 @@ public static class FileChecks
             return;
         }
         
-        VCCDownloader.DownloadVCC();
+        VccDownloader.DownloadVcc();
     }
 }
