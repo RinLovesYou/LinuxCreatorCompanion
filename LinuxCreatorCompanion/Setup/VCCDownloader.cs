@@ -6,9 +6,11 @@ namespace LinuxCreatorCompanion.Setup;
 
 public static class VccDownloader
 {
-    public static async void DownloadVcc()
+    public static async Task DownloadVcc()
     {
+        Console.WriteLine("Fetching latest...");
         var latestVersion = await FetchLatestVersionInfo();
+        Console.WriteLine($"Found latest VCC here: {latestVersion.Url}");
 
         using var client = new HttpClient();
         client.BaseAddress = new Uri(latestVersion.Url);
@@ -17,42 +19,57 @@ public static class VccDownloader
         client.DefaultRequestHeaders.Add("User-Agent", "LinuxCreatorCompanion");
         client.DefaultRequestHeaders.Add("Accept", "application/octet-stream");
 
-        var response = client.GetAsync(client.BaseAddress).Result;
+        Console.WriteLine($"Downloading {client.BaseAddress} ...");
+        var response = await client.GetAsync(client.BaseAddress);
 
         if (!response.IsSuccessStatusCode)
             throw new Exception($"VCC download failed with code {response.StatusCode}");
+        Console.WriteLine("Done");
 
         var tempPath = Path.Combine(Directory.GetCurrentDirectory(), "tmp");
         Directory.CreateDirectory(tempPath);
 
+        Console.WriteLine("Copying to vcc.exe...");
         var vccPath = Path.Combine(tempPath, "vcc.exe");
         await using (var fileStream = File.Create(vccPath))
         {
             await response.Content.CopyToAsync(fileStream);
         }
+        Console.WriteLine("Done");
 
-        if (!WineCheck())
+        Console.WriteLine("Checking for wine...");
+        var hasWine = await WineCheck();
+        if (!hasWine)
             throw new Exception("Wine is not installed!");
+        Console.WriteLine("Done");
 
         var innounp = Path.Combine(Directory.GetCurrentDirectory(), "BaseLibs", "innounp.exe");
 
-        var process = new Process
+        var wineArgs = $"\"{innounp}\" -x \"{vccPath}\" -d\"{tempPath}\"";
+        Console.WriteLine($"Launching: wine {wineArgs}");
+
+        using (var process = new Process())
         {
-            StartInfo =
+            process.StartInfo = new ProcessStartInfo
             {
                 FileName = "wine",
-                Arguments = $"\"{innounp}\" -x \"{vccPath}\" -d\"{tempPath}\"",
+                Arguments = wineArgs,
                 RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
-            }
-        };
+            };
+            process.OutputDataReceived += (_, e) => Console.WriteLine(e.Data);
+            process.ErrorDataReceived += (_, e) => Console.WriteLine(e.Data);
 
-        process.Start();
-        await process.WaitForExitAsync();
-
-        if (process.ExitCode != 0)
-            throw new Exception($"Could not extract VCC Files {process.ExitCode}");
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            await process.WaitForExitAsync();
+            if (process.ExitCode != 0)
+                throw new Exception($"Could not extract VCC Files {process.ExitCode}");
+        }
+        Console.WriteLine("Completed innounp.");
 
         var vccFolder = Path.Combine(tempPath, "{app}");
 
@@ -116,7 +133,7 @@ public static class VccDownloader
         return new VccVersionInfo(downloadUrlVcc);
     }
 
-    private static bool WineCheck()
+    private static async Task<bool> WineCheck()
     {
         var process = new Process
         {
@@ -131,7 +148,7 @@ public static class VccDownloader
         };
 
         process.Start();
-        process.WaitForExit();
+        await process.WaitForExitAsync();
 
         return process.ExitCode == 0;
     }

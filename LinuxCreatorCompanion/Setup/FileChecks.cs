@@ -15,18 +15,18 @@ public static class FileChecks
         "Tools",
         "Templates"
     };
-    
-    public static void VCCFileChecks()
+
+    public static async Task VccFileChecks()
     {
-        bool foldersExist = VCCFolders.Select((s) => Path.Combine(Directory.GetCurrentDirectory(), s)).All(Directory.Exists);
-        bool filesExist = VCCFiles.Select((s) => Path.Combine(Directory.GetCurrentDirectory(), s)).All(File.Exists);
+        var foldersExist = VCCFolders.Select((s) => Path.Combine(Directory.GetCurrentDirectory(), s)).All(Directory.Exists);
+        var filesExist = VCCFiles.Select((s) => Path.Combine(Directory.GetCurrentDirectory(), s)).All(File.Exists);
 
         if (foldersExist && filesExist)
         {
             Console.WriteLine("VCC Files and Folders exist, skipping download.");
             return;
         }
-        
-        VccDownloader.DownloadVcc();
+
+        await VccDownloader.DownloadVcc();
     }
 }

@@ -12,7 +12,7 @@ public class Program
     }
 
     [STAThread]
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         // AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
         // {
@@ -25,8 +25,8 @@ public class Program
         //     if (o.SetupPath != null)
         //         CreatorCompanionExtractor.Extract(o.SetupPath!);
         // });
-        
-        FileChecks.VCCFileChecks();
+
+        await FileChecks.VccFileChecks();
 
         Entrypoint.Run(args);
     }
