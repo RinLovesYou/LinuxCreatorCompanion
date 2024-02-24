@@ -45,7 +45,7 @@ public static class VccDownloader
 
         var innounp = Path.Combine(Directory.GetCurrentDirectory(), "BaseLibs", "innounp.exe");
 
-        var wineArgs = $"\"{innounp}\" -x \"{vccPath}\" -d\"{tempPath}\"";
+        var wineArgs = $"\"{innounp}\" -y -x \"{vccPath}\" -d\"{tempPath}\"";
         Console.WriteLine($"Launching: wine {wineArgs}");
 
         using (var process = new Process())
