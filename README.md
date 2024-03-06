@@ -13,6 +13,9 @@
   </p>
 </div>
 
+## Archival Notice
+[vrc-get](https://github.com/anatawa12/vrc-get) is working on an entirely open source creator companion gui, so i will not continue updating this. At the time of writing it's still in beta, so in the meantime you can use this project.
+
 ## Disclaimer
 This is a *dirty* port. Things have been hastily patched for surface level functionality. <br>
 In the future I will clean things up, make the install process more automated, etc.
